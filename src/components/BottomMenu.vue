@@ -10,14 +10,14 @@
                 🏆
                 <span>Top</span>
             </router-link>
-            <button className="menu-item">
+            <router-link class="menu-item" to="/channels" tag="button">
                 💰
-                <span>Buy</span>
-            </button>
-            <button className="menu-item">
+                <span>Earn</span>
+            </router-link>
+            <router-link class="menu-item" to="/boosts" tag="button">
                 🚀
                 <span>Boosts</span>
-            </button>
+            </router-link>
         </div>
     </div>
 </template>

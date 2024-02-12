@@ -9,10 +9,11 @@ const userStore = useUserStore()
 
 const coinRef = ref<HTMLElement | null>(null);
 const clickCount = ref(0);
-let timerId: number | undefined;
+let timerId: NodeJS.Timeout | undefined;
 
 const resetClickCount = () => {
     console.log(`Кількість натискань: ${clickCount.value}`);
+    userStore.sendMineCoins(clickCount.value)
     clickCount.value = 0; // Скидуємо лічильник після виведення
 };
 const onUserClick = () => {
@@ -26,13 +27,13 @@ const onUserClick = () => {
 };
 
 onMounted(() => {
-    window.addEventListener('touchstart', onUserClick);
-    window.addEventListener('mousedown', onUserClick);
+    // window.addEventListener('touchstart', onUserClick);
+    // window.addEventListener('mousedown', onUserClick);
 });
 
 onUnmounted(() => {
-    window.removeEventListener('touchstart', onUserClick);
-    window.removeEventListener('mousedown', onUserClick);
+    // window.removeEventListener('touchstart', onUserClick);
+    // window.removeEventListener('mousedown', onUserClick);
     if (timerId) clearTimeout(timerId);
 });
 
@@ -85,10 +86,11 @@ const applyTilt = (event: MouseEvent | TouchEvent) => {
     const relativeY = clientY - (numbersContainerRect?.top ?? 0);
 
 
-    if ((userStore.user?.energy ?? 0) > 0) {
+    if ((userStore.user?.energy ?? 0) > (userStore.user?.mine_level ?? 0)) {
         userStore.mineCoins();
         createFlyingNumber(userStore.user?.mine_level ?? 0, relativeX, relativeY);
         useWebAppHapticFeedback().impactOccurred("light");
+        onUserClick()
     }
 
     const coinRect = coinRef.value.getBoundingClientRect();

@@ -14,7 +14,7 @@ useWebAppBackButton().onBackButtonClicked(() => {
   useWebAppBackButton().hideBackButton()
 })
 
-let rechargeID: number | null
+let rechargeID: NodeJS.Timeout | null
 onMounted(() => {
   const userStore = useUserStore()
   userStore.login(useWebApp().initData)

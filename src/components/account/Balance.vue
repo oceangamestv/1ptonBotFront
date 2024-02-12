@@ -1,15 +1,24 @@
 <script lang="ts" setup>
 import { useUserStore } from '@/store/user';
+import { computed } from 'vue';
 
 const userStore = useUserStore()
 
 
+const fontSize = computed(() => {
+  const balanceLength = userStore.user?.balance.toString().length || 0;
+  if (balanceLength < 5) return '40px'; // базовий розмір для коротких значень
+  if (balanceLength < 8) return '35px';
+  if (balanceLength < 12) return '30px'; // менший розмір для середніх значень
+  if (balanceLength < 15) return '25px'; // менший розмір для середніх значень
+  return '20px'; // ще менший розмір для довгих значень
+});
 </script>
 
 <template>
     <div class="balance-panel">
             <span class="balance-hint">Your balance</span>
-            <div class="balance">🪙 {{userStore.user?.balance}}</div>
+            <div class="balance" :style="{ fontSize: fontSize }">🪙 {{userStore.user?.balance.toLocaleString()}}</div>
         </div>
 </template>
 
@@ -28,7 +37,6 @@ const userStore = useUserStore()
   color: gray;
 }
 .balance {
-  font-size: 40px;
   font-weight: bold;
 }
 </style>
