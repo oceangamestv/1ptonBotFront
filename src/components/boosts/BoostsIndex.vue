@@ -93,8 +93,12 @@ const purchaseBoost = () => {
         <div class="boost" @click="showPurchasePopup('energy')">
             <div class="icon-box">⚡️</div>
             <div class="text-container">
-                <div>Energy Recharging<span class="badge">{{ userStore.boosts?.current_energy_level }} level</span></div>
-                <div class="price">🪙 {{ userStore.boosts?.energy_level_price.toLocaleString() }}</div>
+                <div>
+                    Energy Recharging
+                    <span v-if="(userStore.boosts?.current_energy_level??0)<4" class="badge">{{ userStore.boosts?.current_energy_level }} level</span>
+                    <span v-else class="badge">max</span>
+                </div>
+                <div v-if="(userStore.boosts?.current_energy_level??0)<4" class="price">🪙 {{ userStore.boosts?.energy_level_price.toLocaleString() }}</div>
             </div>
         </div>
         <div class="boost" @click="showPurchasePopup('max_energy')">
