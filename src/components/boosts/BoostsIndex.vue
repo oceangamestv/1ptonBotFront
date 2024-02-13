@@ -2,6 +2,7 @@
 import { useUserStore } from '@/store/user';
 import { ref } from 'vue';
 import Balance from '../account/Balance.vue';
+import { useWebAppPopup } from 'vue-tg'
 
 const userStore = useUserStore()
 userStore.getBoosts()
@@ -27,6 +28,7 @@ function showPurchasePopup(boost: string) {
     switch (boost) {
         case 'multitap':
             if (userStore.boosts?.mine_level_price > userStore.user.balance) {
+                useWebAppPopup().showAlert("You don't have enough coins to buy this")
                 return;
             }
             selectedBoost.value = {
@@ -40,10 +42,11 @@ function showPurchasePopup(boost: string) {
             }
             break;
         case 'energy':
-            if (userStore.boosts?.energy_level_price > userStore.user.balance) {
+            if (userStore.boosts?.current_energy_level >= 4) {
                 return;
             }
-            if (userStore.boosts?.current_energy_level >= 4) {
+            if (userStore.boosts?.energy_level_price > userStore.user.balance) {
+                useWebAppPopup().showAlert("You don't have enough coins to buy this")
                 return;
             }
             selectedBoost.value = {
@@ -58,6 +61,7 @@ function showPurchasePopup(boost: string) {
             break;
         case 'max_energy':
             if (userStore.boosts?.max_energy_price > userStore.user.balance) {
+                useWebAppPopup().showAlert("You don't have enough coins to buy this")
                 return;
             }
             selectedBoost.value = {
@@ -142,6 +146,7 @@ const purchaseBoost = () => {
     color: #fff;
     padding: 10px;
     border-radius: 8px;
+    cursor: pointer;
 }
 
 .icon-box {
