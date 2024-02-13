@@ -8,22 +8,25 @@ channelsStore.fetchChannels();
 </script>
 
 <template>
-    <div class="telegram-channels">
-        <div class="channels-title">
-            📢 Subscribe & Earn Coins
-        </div>
-        <div class="channels-list">
-            <div v-for="channel in channelsStore.channels" :key="channel.id" class="channel">
-                <div class="channel-info">
-                    <span class="name">{{ channel.title }}</span>
-                </div>
-                <div class="channel-action">
-                    <span class="reward">🪙 {{ channel.reward.toLocaleString() }}</span>
-                    <button class="button" @click="wn.openTelegramLink(channel.invite_link)">Join</button>
-                </div>
-            </div>
-        </div>
+  <div class="telegram-channels">
+    <div class="channels-title">
+      📢 Subscribe & Earn Coins
+      <div class="hint">
+        ⚠️ Unfollowers will incur a penalty twice the size of the reward.
+      </div>
     </div>
+    <div class="channels-list">
+      <div v-for="channel in channelsStore.channels" :key="channel.id" class="channel">
+        <div class="channel-info">
+          <span class="name">{{ channel.title }}</span>
+        </div>
+        <div class="channel-action">
+          <span class="reward">🪙 {{ channel.reward.toLocaleString() }}</span>
+          <button class="button" @click="wn.openTelegramLink(channel.invite_link)">Join</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -46,6 +49,7 @@ channelsStore.fetchChannels();
 .channel-info {
   display: flex;
   flex-direction: column;
+  /* font-size: 18px; */
 }
 
 .channel-action {
@@ -53,7 +57,9 @@ channelsStore.fetchChannels();
   align-items: center;
 }
 
-.name, .description, .reward {
+.name,
+.description,
+.reward {
   margin-right: 15px;
 }
 
@@ -64,5 +70,7 @@ channelsStore.fetchChannels();
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: large;
+  font-weight: bold;
 }
 </style>

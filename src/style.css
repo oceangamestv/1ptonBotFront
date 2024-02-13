@@ -78,3 +78,8 @@ footer {
       transform: translateY(-250px);
   }
 }
+
+.hint {
+  color: #c5c5c5;
+  font-size: 14px;
+}
