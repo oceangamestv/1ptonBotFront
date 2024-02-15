@@ -134,6 +134,12 @@ const resetTilt = () => {
     width: 80%;
     height: auto;
     user-select: none;
+    -webkit-tap-highlight-color: transparent; /* Для вебкіт-браузерів на мобільних пристроях */
+    -webkit-user-select: none; /* Специфічно для WebKit браузерів */
     /* Додаємо цю властивість */
+}
+
+.coin:active {
+    -webkit-tap-highlight-color: transparent;
 }
 </style>

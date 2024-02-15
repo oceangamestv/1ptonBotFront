@@ -12,6 +12,7 @@ export interface User {
     access_token: string;
     avatar_url?: string;
     access_token_expires_at: string;
+    daily_booster_available_at: Date;
 };
 
 export interface Boosts {
@@ -26,6 +27,12 @@ export interface Boosts {
 export interface UserWithBoosts {
     user: User;
     boosts: Boosts;
+}
+
+export interface DailyBooster {
+    coin: number;
+    energy: number;
+    next_at: Date;
 }
 
 export interface MiningResult {
@@ -136,6 +143,18 @@ export const useUserStore = defineStore('user', {
             this.setBoosts(result.data.boosts)
             // this.user.balance = result.data.balance
             // this.user.energy = result.data.newEnergy
+        },
+        async openDailyBooster() {
+            if (!this.user) {
+                return;
+            }
+
+            const result = await axios.post<DailyBooster>(`${import.meta.env.VITE_API_HOST}/dailyBooster`, {}, {
+                headers: {
+                    'x-api-key': this.user.access_token,
+                }
+            });
+            return result.data
         },
         recharge() {
             if (this.user) {

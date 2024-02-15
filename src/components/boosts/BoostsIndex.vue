@@ -3,23 +3,38 @@ import { useUserStore } from '@/store/user';
 import { ref } from 'vue';
 import Balance from '../account/Balance.vue';
 import { useWebAppPopup } from 'vue-tg'
+import moment from 'moment';
 
 const userStore = useUserStore()
 userStore.getBoosts()
 const isPopupVisible = ref(false);
+const lootboxContent = ref({
+    coin: 0,
+    energy: 0,
+    isOpen: false
+});
 
 function closePopup() {
     isPopupVisible.value = false;
+    // lootboxContent.value.isOpen = false;
+
 }
+console.log(moment(userStore.user?.daily_booster_available_at).isBefore(new Date()))
+console.log(userStore.user?.daily_booster_available_at.toString())
+console.log(moment(userStore.user?.daily_booster_available_at).toString())
+console.log(new Date())
+console.log(moment().toString())
 const selectedBoost = ref({
     id: 'multitap',
     name: '👆 Multitap',
     description: 'Increase amount of coins you can earn per one tap',
-    nextLevelSpec: '',
+    nextLevelSpec: [''],
     price: 1999,
     next_level: 5,
-    level: 1
+    level: 1,
+    action: "Get"
 });
+
 
 function showPurchasePopup(boost: string) {
     if (!userStore.boosts || !userStore.user) {
@@ -35,10 +50,11 @@ function showPurchasePopup(boost: string) {
                 id: 'multitap',
                 name: '👆 Multitap',
                 description: 'Increase amount of coins you can earn per one tap',
-                nextLevelSpec: "+1 per tap for each level.",
+                nextLevelSpec: ["+1 per tap for each level."],
                 price: userStore.boosts?.mine_level_price,
                 next_level: userStore.boosts?.current_mine_level + 1,
-                level: userStore.boosts?.current_mine_level
+                level: userStore.boosts?.current_mine_level,
+                action: "Get"
             }
             break;
         case 'energy':
@@ -53,10 +69,11 @@ function showPurchasePopup(boost: string) {
                 id: 'energy',
                 name: '👆 Energy Recharging',
                 description: "Increase the energy recharging speed. Max level is 4",
-                nextLevelSpec: "+1 / sec for each level.",
+                nextLevelSpec: ["+1 / sec for each level."],
                 price: userStore.boosts?.energy_level_price,
                 next_level: userStore.boosts?.current_energy_level + 1,
-                level: userStore.boosts?.current_energy_level
+                level: userStore.boosts?.current_energy_level,
+                action: "Get"
             }
             break;
         case 'max_energy':
@@ -66,20 +83,60 @@ function showPurchasePopup(boost: string) {
             }
             selectedBoost.value = {
                 id: 'max_energy',
-                name: '🔋 Energy Capacity',
+                name: '⚡️ Energy Capacity',
                 description: 'Increase your energy limit, so you can mine more per session',
-                nextLevelSpec: "+500 energy points for each level.",
+                nextLevelSpec: ["+500 energy points for each level."],
                 price: userStore.boosts?.max_energy_price,
                 next_level: userStore.user?.max_energy_level + 2,
-                level: userStore.user?.max_energy_level + 2
+                level: userStore.user?.max_energy_level + 2,
+                action: "Get"
             }
             break;
+        case 'daily_lootbox':
+            if (moment(userStore.user?.daily_booster_available_at).isAfter(moment())) {
+                useWebAppPopup().showAlert("Daily lootbox unavailable yet")
+                return;
+            }
+            selectedBoost.value = {
+                id: 'daily_lootbox',
+                name: '🎁 Daily lootbox',
+                description: 'One of the listed gifts',
+                nextLevelSpec: [
+                    "🪙 from 500 to 5000",
+                    "⚡️ from 1000 to full"
+                ],
+                price: 0,
+                next_level: 0,
+                level: 0,
+                action: "Open"
+            }
     }
     isPopupVisible.value = true;
 }
 
 const purchaseBoost = () => {
-    userStore.purchaseBoost(selectedBoost.value.id)
+    if (selectedBoost.value.id === 'daily_lootbox') {
+        // Припустимо, ви вирішили, що в коробці "випало" 1000 монет
+        lootboxContent.value.coin = 500;
+        lootboxContent.value.isOpen = true;
+        // Показати анімацію випадання предмета
+        // Тут можна використати setTimeout, щоб показати анімацію після невеликої затримки
+        userStore.openDailyBooster().then(dailyBooster => {
+            lootboxContent.value.coin = dailyBooster?.coin ?? 0
+            lootboxContent.value.energy = dailyBooster?.energy ?? 0
+            isPopupVisible.value = true;
+            if (userStore.user && dailyBooster) userStore.user.daily_booster_available_at = dailyBooster.next_at
+        })
+    } else {
+        userStore.purchaseBoost(selectedBoost.value.id)
+    }
+    closePopup()
+}
+const claimDailyBooster = () => {
+    lootboxContent.value.isOpen = false
+    lootboxContent.value.coin = 0
+    lootboxContent.value.energy = 0
+
     closePopup()
 }
 </script>
@@ -99,10 +156,12 @@ const purchaseBoost = () => {
             <div class="text-container">
                 <div>
                     Energy Recharging
-                    <span v-if="(userStore.boosts?.current_energy_level??0)<4" class="badge">{{ userStore.boosts?.current_energy_level }} level</span>
+                    <span v-if="(userStore.boosts?.current_energy_level ?? 0) < 4" class="badge">{{
+                        userStore.boosts?.current_energy_level }} level</span>
                     <span v-else class="badge">max</span>
                 </div>
-                <div v-if="(userStore.boosts?.current_energy_level??0)<4" class="price">🪙 {{ userStore.boosts?.energy_level_price.toLocaleString() }}</div>
+                <div v-if="(userStore.boosts?.current_energy_level ?? 0) < 4" class="price">🪙 {{
+                    userStore.boosts?.energy_level_price.toLocaleString() }}</div>
             </div>
         </div>
         <div class="boost" @click="showPurchasePopup('max_energy')">
@@ -110,6 +169,15 @@ const purchaseBoost = () => {
             <div class="text-container">
                 <div>Energy Capacity<span class="badge">{{ (userStore.user?.max_energy_level ?? 0) + 1 }} level</span></div>
                 <div class="price">🪙 {{ userStore.boosts?.max_energy_price.toLocaleString() }}</div>
+            </div>
+        </div>
+        <div class="boost daily-boost" @click="showPurchasePopup('daily_lootbox')">
+            <div class="icon-box">🎁</div>
+            <div class="text-container">
+                <div>Daily Lootbox</div>
+                <div v-if="moment(userStore.user?.daily_booster_available_at).isBefore(moment())">Available</div>
+                <div class="price" v-else>⏳ {{ moment(userStore.user?.daily_booster_available_at ?? new Date()).fromNow() }}
+                </div>
             </div>
         </div>
     </div>
@@ -121,15 +189,26 @@ const purchaseBoost = () => {
                 <h2>{{ selectedBoost.name }}</h2>
                 <button class="close-button" @click="closePopup">✖</button>
             </div>
-            <div class="popup-body">
+            <div v-if="!lootboxContent.isOpen" class="popup-body">
                 <p>{{ selectedBoost.description }}</p>
-                <p class="boost-desc-hint">{{ selectedBoost.nextLevelSpec }}</p>
-                <p>🪙{{ selectedBoost.price.toLocaleString() }}<span class="price-hint">/ {{ selectedBoost.next_level }}
+                <p v-for="spec in selectedBoost.nextLevelSpec" class="boost-desc-hint">{{ spec }}</p>
+                <p v-if="selectedBoost.price != 0">🪙{{ selectedBoost.price.toLocaleString() }}<span class="price-hint">/ {{
+                    selectedBoost.next_level }}
                         level</span></p>
-                <button class="boost-purchase-button" @click="purchaseBoost">Get</button>
+                <button class="boost-purchase-button" @click="purchaseBoost">{{ selectedBoost.action }}</button>
+            </div>
+            <div v-else class="lootbox-items">
+                <p class="lootbox-item">Your gift:</p>
+                <p v-if="lootboxContent.coin > 0">🪙 +{{lootboxContent.coin}}</p>
+                <p v-if="lootboxContent.energy > 0">⚡️ +{{lootboxContent.energy}}</p>
+                <button style="margin-top:10px" class="boost-purchase-button" @click="claimDailyBooster">Claim</button>
             </div>
         </div>
     </div>
+    <!-- Умовно відображаємо вміст коробки, якщо він існує
+    <div v-if="lootboxContent.isOpen" class="lootbox-item">
+        {{ lootboxContent }}
+    </div> -->
 </template>
 
 <style scoped>
@@ -147,6 +226,10 @@ const purchaseBoost = () => {
     padding: 10px;
     border-radius: 8px;
     cursor: pointer;
+}
+
+.daily-boost {
+    background: rgba(255, 221, 0, 0.1);
 }
 
 .icon-box {
@@ -214,8 +297,8 @@ const purchaseBoost = () => {
     margin: 10px;
     max-width: 400px;
     background-color: rgba(39, 39, 39, 0.4);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     padding: 20px;
     border-radius: 10px;
     z-index: 1001;
@@ -261,5 +344,26 @@ const purchaseBoost = () => {
     color: #aeaeae;
     margin-left: 5px;
     font-size: 12px;
+}
+
+@keyframes drop {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.lootbox-items {
+    animation: drop 0.5s ease-out;
+    /* Застосовуємо анімацію до елементу */
+}
+
+.lootbox-item {
+    margin-top: 10px;
 }
 </style>
