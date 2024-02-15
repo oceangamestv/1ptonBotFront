@@ -125,7 +125,11 @@ const purchaseBoost = () => {
             lootboxContent.value.coin = dailyBooster?.coin ?? 0
             lootboxContent.value.energy = dailyBooster?.energy ?? 0
             isPopupVisible.value = true;
-            if (userStore.user && dailyBooster) userStore.user.daily_booster_available_at = dailyBooster.next_at
+            if (userStore.user && dailyBooster) {
+                userStore.user.balance += lootboxContent.value.energy
+                userStore.user.energy += lootboxContent.value.energy
+                userStore.user.daily_booster_available_at = dailyBooster.next_at
+            }
         })
     } else {
         userStore.purchaseBoost(selectedBoost.value.id)
