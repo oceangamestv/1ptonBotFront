@@ -1,9 +1,11 @@
 <template>
     <div className="bottom-menu">
-        <div className="energy">
-            <span className="energy-icon">⚡️</span>
-            <span className="energy-value">{{ userStore.user?.energy }} / {{ 1000 + (userStore.user?.max_energy_level ?? 0) *
-                500 }}</span>
+        <div class="energy">
+            <span class="energy-icon">⚡️</span>
+            <div class="energy-info">
+              <span class="energy-value">{{ userStore.user?.energy }}</span>
+              <span class="max-energy">/ {{ 1000 + (userStore.user?.max_energy_level ?? 0) * 500 }}</span>
+            </div>
         </div>
         <div className="menu-items">
             <router-link class="menu-item" to="/leaderboard" tag="button">
@@ -45,9 +47,24 @@ const userStore = useUserStore()
     margin: 5px;
 }
 
+.max-energy {
+    color: gray; /* Сірий колір */
+    font-size: 0.8em; /* Менший розмір шрифту */
+    display: block; /* Робимо елемент блочним, щоб він відображався на новому рядку */
+}
+
 .energy {
     display: flex;
-    align-items: center;
+    align-items: center; /* Вирівнювання дочірніх елементів по вертикалі */
+    /* Інші стилі залишаються без змін */
+}
+
+.energy-icon {
+}
+
+.energy-info {
+    display: flex;
+    flex-direction: column; /* Тексти відображаються один під одним */
 }
 
 .energy-value {

@@ -14,7 +14,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background: var(--tg-theme-secondary-background-color);
+  background: linear-gradient(180deg, #000000 30%, #514500 100%);
+  /* background: var(--tg-theme-secondary-background-color); */
   /* background: var(--tg-theme-secondary-background-color, #3e4761); */
   /* background: linear-gradient(180deg, #000000 0%, #2c003e 100%); */
   color: var(--tg-theme-text-color, rgb(255, 255, 255));

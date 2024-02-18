@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import { useWebAppPopup } from 'vue-tg';
 
 export interface User {
     id: number;
@@ -11,6 +12,8 @@ export interface User {
     mine_level: number;
     access_token: string;
     avatar_url?: string;
+    auto_farmer: boolean;
+    auto_farmer_profit: number;
     access_token_expires_at: string;
     daily_booster_available_at: Date;
 };
@@ -22,6 +25,7 @@ export interface Boosts {
     energy_level_price: number;
     current_max_energy: number;
     max_energy_price: number;
+    auto_farmer_price: number;
 }
 
 export interface UserWithBoosts {
@@ -68,6 +72,13 @@ export const useUserStore = defineStore('user', {
                     });
                     console.log(response.data)
                     this.setUser(response.data);
+                    if (!this.user) {
+                        return
+                    }
+                    if (this.user.auto_farmer_profit > 0) {
+                        this.user.balance -= this.user.auto_farmer_profit
+                    }
+                    return this.user
                 } catch (error) {
                     console.error('Login via ready token error:', error);
                     // Обробка помилок або відображення повідомлення користувачу

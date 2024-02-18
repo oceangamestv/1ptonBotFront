@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useUserStore } from '@/store/user';
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const userStore = useUserStore()
 
@@ -13,12 +13,38 @@ const fontSize = computed(() => {
   if (balanceLength < 15) return '25px'; // менший розмір для середніх значень
   return '20px'; // ще менший розмір для довгих значень
 });
+
+const animatedBalance = ref(userStore.user?.balance || 0);
+// Функція для плавної зміни балансу
+function animateBalance(newBalance: number) {
+  const duration = 200; // тривалість анімації в мілісекундах
+  const startBalance = animatedBalance.value;
+  const change = newBalance - startBalance;
+  const startTime = performance.now();
+
+  function update(currentTime: number) {
+    const elapsedTime = currentTime - startTime;
+    const progress = Math.min(elapsedTime / duration, 1);
+    animatedBalance.value = Math.round(startBalance + change * progress);
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+
+  requestAnimationFrame(update);
+}
+
+// Спостерігаємо за зміною балансу і анімуємо цифри
+watch(() => (userStore.user?.balance ?? 0), (newBalance: number) => {
+  animateBalance(newBalance);
+}, { immediate: true });
 </script>
 
 <template>
     <div class="balance-panel">
             <span class="balance-hint">Your balance</span>
-            <div class="balance" :style="{ fontSize: fontSize }">🪙 {{userStore.user?.balance.toLocaleString()}}</div>
+            <div class="balance" :style="{ fontSize: fontSize }">🪙 {{animatedBalance.toLocaleString()}}</div>
         </div>
 </template>
 

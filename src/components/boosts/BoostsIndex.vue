@@ -110,6 +110,30 @@ function showPurchasePopup(boost: string) {
                 level: 0,
                 action: "Open"
             }
+            break;
+        case 'auto_farmer':
+            if (userStore.user?.auto_farmer) {
+                useWebAppPopup().showAlert("Your auto farmer already works")
+                return;
+            }
+            if (userStore.boosts?.auto_farmer_price > userStore.user.balance) {
+                useWebAppPopup().showAlert("You don't have enough coins to buy this")
+                return;
+            }
+            selectedBoost.value = {
+                id: 'auto_farmer',
+                name: '👨‍🌾 Auto Farmer',
+                description: 'Farmer mines coins when you AFK more then 1 hour.',
+                nextLevelSpec: [
+                    "Mining value = Energy Recharning level.",
+                    "Maxium 12 hours"
+                ],
+                price: userStore.boosts?.auto_farmer_price,
+                next_level: 0,
+                level: 0,
+                action: "Get"
+            }
+            break;
     }
     isPopupVisible.value = true;
 }
@@ -175,6 +199,15 @@ const claimDailyBooster = () => {
                 <div class="price">🪙 {{ userStore.boosts?.max_energy_price.toLocaleString() }}</div>
             </div>
         </div>
+        <div class="boost daily-boost" @click="showPurchasePopup('auto_farmer')">
+            <div class="icon-box">👨‍🌾</div>
+            <div class="text-container">
+                <div>Auto Farmer</div>
+                <div v-if="!(userStore.user?.auto_farmer ?? false)" class="price">🪙 {{
+                    userStore.boosts?.auto_farmer_price.toLocaleString() }}</div>
+                <div v-else>✅ Enabled</div>
+            </div>
+        </div>
         <div class="boost daily-boost" @click="showPurchasePopup('daily_lootbox')">
             <div class="icon-box">🎁</div>
             <div class="text-container">
@@ -196,15 +229,15 @@ const claimDailyBooster = () => {
             <div v-if="!lootboxContent.isOpen" class="popup-body">
                 <p>{{ selectedBoost.description }}</p>
                 <p v-for="spec in selectedBoost.nextLevelSpec" class="boost-desc-hint">{{ spec }}</p>
-                <p v-if="selectedBoost.price != 0">🪙{{ selectedBoost.price.toLocaleString() }}<span class="price-hint">/ {{
+                <p v-if="selectedBoost.price != 0">🪙{{ selectedBoost.price.toLocaleString() }}<span v-if="selectedBoost.next_level != 0" class="price-hint">/ {{
                     selectedBoost.next_level }}
                         level</span></p>
                 <button class="boost-purchase-button" @click="purchaseBoost">{{ selectedBoost.action }}</button>
             </div>
             <div v-else class="lootbox-items">
                 <p class="lootbox-item">Your gift:</p>
-                <p v-if="lootboxContent.coin > 0">🪙 +{{lootboxContent.coin}}</p>
-                <p v-if="lootboxContent.energy > 0">⚡️ +{{lootboxContent.energy}}</p>
+                <p v-if="lootboxContent.coin > 0">🪙 +{{ lootboxContent.coin }}</p>
+                <p v-if="lootboxContent.energy > 0">⚡️ +{{ lootboxContent.energy }}</p>
                 <button style="margin-top:10px" class="boost-purchase-button" @click="claimDailyBooster">Claim</button>
             </div>
         </div>
