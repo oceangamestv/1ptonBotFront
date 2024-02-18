@@ -17,9 +17,12 @@ const fontSize = computed(() => {
 const animatedBalance = ref(userStore.user?.balance || 0);
 // Функція для плавної зміни балансу
 function animateBalance(newBalance: number) {
-  const duration = 200; // тривалість анімації в мілісекундах
   const startBalance = animatedBalance.value;
   const change = newBalance - startBalance;
+  let duration = 900; // тривалість анімації в мілісекундах
+  if (change <= 10) {
+    duration = 300
+  }
   const startTime = performance.now();
 
   function update(currentTime: number) {

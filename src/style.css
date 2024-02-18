@@ -15,6 +15,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   background: linear-gradient(180deg, #000000 30%, #514500 100%);
+  background-repeat: no-repeat; /* Запобігає повторенню градієнта */
+  background-attachment: fixed; /* Градієнт залишається нерухомим при прокрутці */
+  background-size: cover; /* Гарантує, що градієнт покриває всю сторінку */
   /* background: var(--tg-theme-secondary-background-color); */
   /* background: var(--tg-theme-secondary-background-color, #3e4761); */
   /* background: linear-gradient(180deg, #000000 0%, #2c003e 100%); */
