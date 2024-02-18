@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { useWebAppPopup } from 'vue-tg';
 
 export interface User {
     id: number;
