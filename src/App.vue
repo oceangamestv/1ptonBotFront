@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watchEffect } from 'vue'
-import { useWebAppViewport, useWebApp, useWebAppBackButton } from 'vue-tg'
+import { useWebAppViewport, useWebApp, useWebAppBackButton, useWebAppTheme } from 'vue-tg'
 import { useUserStore } from './store/user'
 import { useRoute, useRouter } from 'vue-router';
 import Popup from '@/components/Popup.vue'
@@ -9,6 +9,8 @@ const router = useRouter()
 const route = useRoute()
 
 useWebAppViewport().expand()
+useWebAppTheme().headerColor.value = "#000000";
+useWebAppTheme().backgroundColor.value = "#514500";
 
 useWebAppBackButton().onBackButtonClicked(() => {
   router.push("/")

@@ -69,6 +69,7 @@ const userStore = useUserStore()
 
 .energy-value {
     font-weight: bold;
+    font-size: 22px;
     margin-left: 5px;
 }
 

@@ -93,19 +93,22 @@ const applyTilt = (event: MouseEvent | TouchEvent) => {
         onUserClick()
     }
 
-    const coinRect = coinRef.value.getBoundingClientRect();
-    const coinCenterX = coinRect.left + coinRect.width / 2;
-    const coinCenterY = coinRect.top + coinRect.height / 2;
+    // const coinRect = coinRef.value.getBoundingClientRect();
+    // const coinCenterX = coinRect.left + coinRect.width / 2;
+    // const coinCenterY = coinRect.top + coinRect.height / 2;
 
-    const tiltX = clientX < coinCenterX ? 'rotateY(-10deg)' : 'rotateY(10deg)';
-    const tiltY = clientY < coinCenterY ? 'rotateX(10deg)' : 'rotateX(-10deg)';
+    // const tiltX = clientX < coinCenterX ? 'rotateY(-10deg)' : 'rotateY(10deg)';
+    // const tiltY = clientY < coinCenterY ? 'rotateX(10deg)' : 'rotateX(-10deg)';
 
-    coinRef.value.style.transform = `${tiltY} ${tiltX}`;
+    // coinRef.value.style.transform = `${tiltY} ${tiltX}`;
+
+    coinRef.value.style.transform = 'scale(0.98)';
 };
 
 const resetTilt = () => {
     if (coinRef.value) {
         coinRef.value.style.transform = '';
+        coinRef.value.style.transform = 'scale(1)';
     }
 };
 
@@ -129,7 +132,7 @@ const resetTilt = () => {
 }
 
 .coin {
-    transition: transform 0.2s;
+    transition: transform 0.1s;
     cursor: pointer;
     width: 80%;
     height: auto;
