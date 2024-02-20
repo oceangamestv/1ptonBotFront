@@ -8,6 +8,7 @@ export interface LeaderboardPosition {
     identity: string;
     position: number;
     avatar_url?: string;
+    is_premium: boolean;
 };
 
 export interface Leaderboard {

@@ -14,6 +14,8 @@ export interface User {
     auto_farmer: boolean;
     auto_farmer_profit: number;
     access_token_expires_at: string;
+    premium_expires_at: Date | null;
+    is_premium: boolean;
     daily_booster_available_at: Date;
 };
 
@@ -95,7 +97,11 @@ export const useUserStore = defineStore('user', {
         },
         mineCoins() {
             if (this.user && this.user.energy >= this.user.mine_level) {
-                this.user.balance += this.user.mine_level
+                var mul = 1
+                if (this.user.is_premium) {
+                    mul = 2
+                }
+                this.user.balance += this.user.mine_level * mul
                 this.user.energy -= this.user.mine_level
             }
         },
@@ -103,6 +109,7 @@ export const useUserStore = defineStore('user', {
             if (!this.user) {
                 return;
             }
+
             let energy = this.user.energy + this.user.mine_level * clicks
 
             console.log("clicks", clicks)

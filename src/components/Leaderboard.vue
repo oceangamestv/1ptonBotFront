@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useLeaderboardStore } from '@/store/leaderboard';
-import { useUserStore } from '@/store/user';
+import { User, useUserStore } from '@/store/user';
+import moment from 'moment';
 import { onMounted } from 'vue';
 
 
@@ -36,7 +37,8 @@ onMounted(() => {
                     <div v-else class="initials">{{ player.identity.substring(0, 2).toUpperCase() }}</div>
                 </span>
                 <div class="player-info">
-                    <span class="name">{{ player.identity }}</span>
+                    <span v-if="player.is_premium" class="name">{{ player.identity }}</span>
+                    <span v-else>{{ player.identity }}</span>
                     <span class="player-score">🪙 {{ player.score.toLocaleString() }}</span>
                 </div>
             </div>
@@ -45,6 +47,10 @@ onMounted(() => {
 </template>
 
 <style scoped>
+
+.name {
+  color: rgb(255, 153, 0);
+}
 .player {
   display: flex;
   align-items: center;

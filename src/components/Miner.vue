@@ -47,7 +47,11 @@ const createFlyingNumber = (farm: number, x: number, y: number) => {
     numberEl.style.position = 'absolute';
     numberEl.style.left = `${x}px`;
     numberEl.style.top = `${y}px`;
-    numberEl.style.color = 'white';
+    if (userStore.user && userStore.user.is_premium) {
+        numberEl.style.color = '#ff9900';
+    } else {
+        numberEl.style.color = 'white';
+    }
     numberEl.style.userSelect = 'none';
     numberEl.style.pointerEvents = 'none';
     numberEl.style.fontSize = '40px';
@@ -63,6 +67,7 @@ const createFlyingNumber = (farm: number, x: number, y: number) => {
 };
 
 const applyTilt = (event: MouseEvent | TouchEvent) => {
+    if (!userStore.user) return;
     if (!coinRef.value) return;
 
     if (event.type === 'mousedown' && isMobileDevice()) {
@@ -86,9 +91,13 @@ const applyTilt = (event: MouseEvent | TouchEvent) => {
     const relativeY = clientY - (numbersContainerRect?.top ?? 0);
 
 
-    if ((userStore.user?.energy ?? 0) > (userStore.user?.mine_level ?? 0)) {
+    if (userStore.user.energy > userStore.user.mine_level) {
         userStore.mineCoins();
-        createFlyingNumber(userStore.user?.mine_level ?? 0, relativeX, relativeY);
+        var mul = 1
+        if (userStore.user.is_premium) {
+            mul = 2
+        }
+        createFlyingNumber(userStore.user.mine_level*mul, relativeX, relativeY);
         useWebAppHapticFeedback().impactOccurred("light");
         onUserClick()
     }
@@ -118,7 +127,9 @@ const resetTilt = () => {
     <main>
         <Balance />
         <div class="coin-container numbers-container" ref="numbersContainerRef">
-            <img src="../assets/images/coin.png" class="coin" ref="coinRef" @mousedown="applyTilt" @touchstart="applyTilt"
+            <img v-if="userStore.user?.is_premium" src="../assets/images/coconut_coin.png" class="coin" ref="coinRef" @mousedown="applyTilt" @touchstart="applyTilt"
+                @mouseup="resetTilt" @mouseleave="resetTilt" @touchend="resetTilt" />
+            <img v-else src="../assets/images/coin.png" class="coin" ref="coinRef" @mousedown="applyTilt" @touchstart="applyTilt"
                 @mouseup="resetTilt" @mouseleave="resetTilt" @touchend="resetTilt" />
         </div>
     </main>
