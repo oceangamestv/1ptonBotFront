@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { useLeaderboardStore } from '@/store/leaderboard';
-import { User, useUserStore } from '@/store/user';
-import moment from 'moment';
+import { useUserStore } from '@/store/user';
 import { onMounted } from 'vue';
 
 
