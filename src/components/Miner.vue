@@ -4,7 +4,6 @@ import Balance from './account/Balance.vue';
 import { useWebAppHapticFeedback } from 'vue-tg'
 import BottomMenu from './BottomMenu.vue';
 import { useUserStore } from '@/store/user';
-import League from './account/League.vue';
 
 const userStore = useUserStore()
 
