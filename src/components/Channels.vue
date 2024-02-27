@@ -25,6 +25,15 @@ channelsStore.fetchChannels();
           <button class="button" @click="wn.openTelegramLink(channel.invite_link)">Join</button>
         </div>
       </div>
+      <div class="channel">
+        <div class="channel-info">
+          <span class="name">JetTon</span>
+        </div>
+        <div class="channel-action">
+          <span class="reward" style="font-size: 12px;">🪙 100K after first deposit</span>
+          <button class="button" @click="wn.openTelegramLink('https://t.me/jetton?start=ccpGavsXUFo')">Play</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
