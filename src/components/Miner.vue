@@ -4,6 +4,7 @@ import Balance from './account/Balance.vue';
 import { useWebAppHapticFeedback } from 'vue-tg'
 import BottomMenu from './BottomMenu.vue';
 import { useUserStore } from '@/store/user';
+import League from './account/League.vue';
 
 const userStore = useUserStore()
 
@@ -126,6 +127,7 @@ const resetTilt = () => {
 <template>
     <main>
         <Balance />
+        <!-- <League /> -->
         <div class="coin-container numbers-container" ref="numbersContainerRef">
             <img v-if="userStore.user?.is_premium" src="../assets/images/coconut_coin.png" class="coin" ref="coinRef" @mousedown="applyTilt" @touchstart="applyTilt"
                 @mouseup="resetTilt" @mouseleave="resetTilt" @touchend="resetTilt" />

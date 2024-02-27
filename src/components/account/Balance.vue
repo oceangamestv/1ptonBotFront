@@ -45,10 +45,10 @@ watch(() => (userStore.user?.balance ?? 0), (newBalance: number) => {
 </script>
 
 <template>
-    <div class="balance-panel">
-            <span class="balance-hint">Your balance</span>
-            <div class="balance" :style="{ fontSize: fontSize }">🪙 {{animatedBalance.toLocaleString()}}</div>
-        </div>
+  <div class="balance-panel">
+    <span class="balance-hint">Your balance</span>
+    <div class="balance" :style="{ fontSize: fontSize }">🪙 {{ animatedBalance.toLocaleString() }}</div>
+  </div>
 </template>
 
 <style scoped>
@@ -59,13 +59,16 @@ watch(() => (userStore.user?.balance ?? 0), (newBalance: number) => {
   margin: 20px;
   color: white;
   text-align: center;
-  user-select: none; /* Додаємо цю властивість */
-  pointer-events: none; /* Це запобігає взаємодії з елементом через курсор */
+  user-select: none;
+  /* Додаємо цю властивість */
+  pointer-events: none;
+  /* Це запобігає взаємодії з елементом через курсор */
 }
+
 .balance-hint {
   color: gray;
 }
+
 .balance {
   font-weight: bold;
-}
-</style>
+}</style>
