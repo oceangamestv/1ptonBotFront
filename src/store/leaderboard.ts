@@ -9,11 +9,11 @@ export interface LeaderboardPosition {
     position: number;
     avatar_url?: string;
     is_premium: boolean;
-};
+}
 
 export interface Leaderboard {
     players: LeaderboardPosition[]
-    me: LeaderboardPosition
+    me: LeaderboardPosition | null
 }
 
 export const useLeaderboardStore = defineStore('leaderboard', {

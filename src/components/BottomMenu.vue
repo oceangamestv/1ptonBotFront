@@ -1,5 +1,5 @@
 <template>
-    <div className="bottom-menu">
+    <div class="bottom-menu">
         <div class="energy">
             <span class="energy-icon">⚡️</span>
             <div class="energy-info">
@@ -7,7 +7,7 @@
               <span class="max-energy">/ {{ 1000 + (userStore.user?.max_energy_level ?? 0) * 500 }}</span>
             </div>
         </div>
-        <div className="menu-items">
+        <div class="menu-items">
             <router-link class="menu-item" to="/leaderboard" tag="button">
                 🏆
                 <span>Top</span>

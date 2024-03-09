@@ -34,16 +34,16 @@ const setActiveTab = (tabName: string) => {
       🏆 Top growth today
     </div>
     <div class="leaderboard-list">
-      <div class="player you">
+      <div class="player you" v-if="leaderboardStore.dailyLeaderboard?.me != null">
         <span class="avatar">
           <img v-if="leaderboardStore.dailyLeaderboard?.me.avatar_url" :src="leaderboardStore.dailyLeaderboard?.me.avatar_url"
             :alt="leaderboardStore.dailyLeaderboard?.me.identity" />
-          <div v-else class="initials">{{ leaderboardStore.dailyLeaderboard?.me.identity?.substring(0, 2).toUpperCase() }}
+          <div v-else class="initials">{{ leaderboardStore.dailyLeaderboard?.me?.identity?.substring(0, 2).toUpperCase() }}
           </div>
         </span>
         <div class="player-info">
-          <span class="name">You on {{ leaderboardStore.dailyLeaderboard?.me.position }} place</span>
-          <span class="player-score">🪙 +{{ leaderboardStore.dailyLeaderboard?.me.score.toLocaleString() }}</span>
+          <span class="name">You on {{ leaderboardStore.dailyLeaderboard?.me?.position }} place</span>
+          <span class="player-score">🪙 +{{ leaderboardStore.dailyLeaderboard?.me?.score.toLocaleString() }}</span>
         </div>
       </div>
       <div v-for="(player, index) in leaderboardStore.dailyLeaderboard?.players" :key="player.id" class="player">
@@ -65,16 +65,16 @@ const setActiveTab = (tabName: string) => {
       🏆 Top growth this month
     </div>
     <div class="leaderboard-list">
-      <div class="player you">
+      <div class="player you" v-if="leaderboardStore.monthlyLeaderboard?.me != null">
         <span class="avatar">
           <img v-if="leaderboardStore.monthlyLeaderboard?.me.avatar_url" :src="leaderboardStore.monthlyLeaderboard?.me.avatar_url"
             :alt="leaderboardStore.monthlyLeaderboard?.me.identity" />
-          <div v-else class="initials">{{ leaderboardStore.monthlyLeaderboard?.me.identity?.substring(0, 2).toUpperCase() }}
+          <div v-else class="initials">{{ leaderboardStore.monthlyLeaderboard?.me?.identity?.substring(0, 2).toUpperCase() }}
           </div>
         </span>
         <div class="player-info">
-          <span class="name">You on {{ leaderboardStore.monthlyLeaderboard?.me.position }} place</span>
-          <span class="player-score">🪙 +{{ leaderboardStore.monthlyLeaderboard?.me.score.toLocaleString() }}</span>
+          <span class="name">You on {{ leaderboardStore.monthlyLeaderboard?.me?.position }} place</span>
+          <span class="player-score">🪙 +{{ leaderboardStore.monthlyLeaderboard?.me?.score.toLocaleString() }}</span>
         </div>
       </div>
       <div v-for="(player, index) in leaderboardStore.monthlyLeaderboard?.players" :key="player.id" class="player">
@@ -96,15 +96,15 @@ const setActiveTab = (tabName: string) => {
       🏆 Top users by balance
     </div>
     <div class="leaderboard-list">
-      <div class="player you">
+      <div class="player you" v-if="leaderboardStore.monthlyLeaderboard?.me != null">
         <span class="avatar">
-          <img v-if="leaderboardStore.leaderboard?.me.avatar_url" :src="leaderboardStore.leaderboard?.me.avatar_url"
+          <img v-if="leaderboardStore.leaderboard?.me?.avatar_url" :src="leaderboardStore.leaderboard?.me.avatar_url"
             :alt="leaderboardStore.leaderboard?.me.identity" />
-          <div v-else class="initials">{{ leaderboardStore.leaderboard?.me.identity?.substring(0, 2).toUpperCase() }}
+          <div v-else class="initials">{{ leaderboardStore.leaderboard?.me?.identity?.substring(0, 2).toUpperCase() }}
           </div>
         </span>
         <div class="player-info">
-          <span class="name">You on {{ leaderboardStore.leaderboard?.me.position }} place</span>
+          <span class="name">You on {{ leaderboardStore.leaderboard?.me?.position }} place</span>
           <span class="player-score">🪙 {{ user?.balance.toLocaleString() }}</span>
         </div>
       </div>
