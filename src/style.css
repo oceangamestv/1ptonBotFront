@@ -21,7 +21,7 @@ body {
   /* background: var(--tg-theme-secondary-background-color); */
   /* background: var(--tg-theme-secondary-background-color, #3e4761); */
   /* background: linear-gradient(180deg, #000000 0%, #2c003e 100%); */
-  color: var(--tg-theme-text-color, rgb(255, 255, 255));
+  color: rgb(255, 255, 255);
   overflow: auto;
   /* -webkit-overflow-scrolling: touch; */
   /* touch-action: none; */
