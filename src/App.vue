@@ -9,8 +9,8 @@ const router = useRouter()
 const route = useRoute()
 
 useWebAppViewport().expand()
-useWebAppTheme().headerColor.value = "#2B2564FF";
-useWebAppTheme().backgroundColor.value = "#2B2564FF";
+useWebAppTheme().headerColor.value = "#be95ff";
+useWebAppTheme().backgroundColor.value = "#af7dff";
 
 useWebAppBackButton().onBackButtonClicked(() => {
   router.push("/")
