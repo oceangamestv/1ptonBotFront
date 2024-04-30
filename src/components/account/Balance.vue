@@ -7,11 +7,11 @@ const userStore = useUserStore()
 
 const fontSize = computed(() => {
   const balanceLength = userStore.user?.balance.toString().length || 0;
-  if (balanceLength < 5) return '40px'; // базовий розмір для коротких значень
-  if (balanceLength < 8) return '35px';
-  if (balanceLength < 12) return '30px'; // менший розмір для середніх значень
-  if (balanceLength < 15) return '25px'; // менший розмір для середніх значень
-  return '20px'; // ще менший розмір для довгих значень
+  if (balanceLength < 5) return '44px'; // базовий розмір для коротких значень
+  if (balanceLength < 8) return '39px';
+  if (balanceLength < 12) return '34px'; // менший розмір для середніх значень
+  if (balanceLength < 15) return '29px'; // менший розмір для середніх значень
+  return '24px'; // ще менший розмір для довгих значень
 });
 
 const animatedBalance = ref(userStore.user?.balance || 0);
@@ -47,14 +47,12 @@ watch(() => (userStore.user?.balance ?? 0), (newBalance: number) => {
 <template>
   <div class="balance-panel">
     <span class="balance-hint">Your balance</span>
-    <div class="balance" :style="{ fontSize: fontSize }">🪙 {{ animatedBalance.toLocaleString() }}</div>
+    <div class="balance" :style="{ fontSize: fontSize }">{{ animatedBalance.toLocaleString() }}</div>
   </div>
 </template>
 
 <style scoped>
 .balance-panel {
-  background-color: rgba(128, 128, 128, 0.1);
-  border-radius: 15px;
   padding: 10px 20px;
   margin: 20px;
   color: white;
@@ -70,5 +68,6 @@ watch(() => (userStore.user?.balance ?? 0), (newBalance: number) => {
 }
 
 .balance {
+  margin-top: 15px;
   font-weight: bold;
 }</style>

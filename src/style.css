@@ -9,32 +9,40 @@ html {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background: linear-gradient(180deg, #000000 30%, #514500 100%);
-  background-repeat: no-repeat; /* Запобігає повторенню градієнта */
-  background-attachment: fixed; /* Градієнт залишається нерухомим при прокрутці */
-  background-size: cover; /* Гарантує, що градієнт покриває всю сторінку */
-  /* background: var(--tg-theme-secondary-background-color); */
-  /* background: var(--tg-theme-secondary-background-color, #3e4761); */
-  /* background: linear-gradient(180deg, #000000 0%, #2c003e 100%); */
+  /* Змінюємо лінійний градієнт на радіальний */
+  background: radial-gradient(circle at center, #141336 30%, #2b2564 100%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
   color: var(--tg-theme-text-color, rgb(255, 255, 255));
   overflow: auto;
-  /* -webkit-overflow-scrolling: touch; */
-  /* touch-action: none; */
-  /* height: 100%; */
   min-height: var(--tg-viewport-height);
 
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
-  -webkit-user-select: none;  /* Safari */
-  -moz-user-select: none;     /* Firefox */
-  -ms-user-select: none;      /* Internet Explorer/Edge */
-  user-select: none;          /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
-
+  /* Додаємо зернистість */
+  overflow: hidden;
+  position: relative;
 }
+
+body::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: url('path_to_your_grain_texture.png');
+  opacity: 0.5; /* Регулюйте непрозорість згідно з вашими потребами */
+  pointer-events: none;
+}
+
 
 #app {
   /* height: 100%; */

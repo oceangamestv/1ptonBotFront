@@ -130,7 +130,7 @@ const resetTilt = () => {
         <div class="coin-container numbers-container" ref="numbersContainerRef">
             <img v-if="userStore.user?.is_premium" src="../assets/images/coconut_coin.png" class="coin" ref="coinRef" @mousedown="applyTilt" @touchstart="applyTilt"
                 @mouseup="resetTilt" @mouseleave="resetTilt" @touchend="resetTilt" />
-            <img v-else src="../assets/images/coin.png" class="coin" ref="coinRef" @mousedown="applyTilt" @touchstart="applyTilt"
+            <img v-else src="../assets/images/coin_min.webp" class="coin" ref="coinRef" @mousedown="applyTilt" @touchstart="applyTilt"
                 @mouseup="resetTilt" @mouseleave="resetTilt" @touchend="resetTilt" />
         </div>
     </main>

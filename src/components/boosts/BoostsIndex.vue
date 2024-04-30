@@ -261,12 +261,13 @@ const claimDailyBooster = () => {
     background: rgba(128, 128, 128, 0.1);
     color: #fff;
     padding: 10px;
-    border-radius: 8px;
+    border-radius: 15px;
+    border: 1px solid #595959;
     cursor: pointer;
 }
 
 .daily-boost {
-    background: rgba(255, 221, 0, 0.1);
+    background: rgba(88, 66, 128, 0.57);
 }
 
 .icon-box {
@@ -280,7 +281,7 @@ const claimDailyBooster = () => {
     color: #fff;
     padding: 10px;
     font-size: 20px;
-    border-radius: 8px;
+    border-radius: 15px;
     /* Apply rounded corners */
     width: 40px;
     /* Set a fixed width for a square shape */
@@ -294,7 +295,8 @@ const claimDailyBooster = () => {
 }
 
 .price {
-    color: #FFD700;
+    font-weight: 500;
+    color: #c8a8ff;
     /* Gold color for the price */
     font-size: 16px;
     /* Smaller font size for the price */
