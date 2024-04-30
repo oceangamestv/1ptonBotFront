@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="energy-progress-bar">
-      <div class="energy-progress" :style="{ width: (userStore.user?.energy ?? 0 / (1000 + (userStore.user?.max_energy_level ?? 0) * 500) * 100) + '%' }"></div>
+      <div class="energy-progress" :style="{ width: ((userStore.user?.energy ?? 0) / (1000 + (userStore.user?.max_energy_level ?? 0) * 500) * 100) + '%' }"></div>
     </div>
   </div>
   <div class="bottom-menu">
