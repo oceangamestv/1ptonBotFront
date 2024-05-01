@@ -29,7 +29,6 @@ body {
   user-select: none;
 
   /* Додаємо зернистість */
-  overflow: hidden;
   position: relative;
 }
 
