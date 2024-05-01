@@ -41,13 +41,14 @@ const userStore = useUserStore()
 
 <style scoped>
 .bottom-menu {
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   background-color: rgba(252, 252, 252, 0.1);
   border-radius: 15px;
   border: 1px solid #595959;
   padding: 5px;
-  margin: 5px 5px 15px;
+  margin: 5px 5px 10px;
 }
 
 .energy-section {

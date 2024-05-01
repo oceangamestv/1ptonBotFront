@@ -138,6 +138,7 @@ const resetTilt = () => {
 </template>
 
 <style scoped>
+
 .coin-container {
     position: relative;
     text-align: center;
