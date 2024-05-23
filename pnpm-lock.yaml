@@ -19,20 +19,23 @@ importers:
         version: 2.30.1
       pinia:
         specifier: ^2.1.7
-        version: 2.1.7(typescript@5.2.2)(vue@3.3.11)
+        version: 2.1.7(typescript@5.2.2)(vue@3.3.11(typescript@5.2.2))
+      v-click-outside:
+        specifier: ^3.2.0
+        version: 3.2.0
       vue:
         specifier: ^3.3.11
         version: 3.3.11(typescript@5.2.2)
       vue-router:
         specifier: '4'
-        version: 4.2.5(vue@3.3.11)
+        version: 4.2.5(vue@3.3.11(typescript@5.2.2))
       vue-tg:
         specifier: ^0.2.0
         version: 0.2.0(typescript@5.2.2)
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^4.5.2
-        version: 4.5.2(vite@5.0.8)(vue@3.3.11)
+        version: 4.5.2(vite@5.0.8(@types/node@20.11.16))(vue@3.3.11(typescript@5.2.2))
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -487,6 +490,10 @@ packages:
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
+  v-click-outside@3.2.0:
+    resolution: {integrity: sha512-QD0bDy38SHJXQBjgnllmkI/rbdiwmq9RC+/+pvrFjYJKTn8dtp7Penf9q1lLBta280fYG2q53mgLhQ+3l3z74w==}
+    engines: {node: '>=6'}
+
   vite@5.0.8:
     resolution: {integrity: sha512-jYMALd8aeqR3yS9xlHd0OzQJndS9fH5ylVgWdB+pxTwxLKdO1pgC5Dlb398BUxpfaBxa4M9oT7j1g503Gaj5IQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -686,7 +693,7 @@ snapshots:
     dependencies:
       undici-types: 5.26.5
 
-  '@vitejs/plugin-vue@4.5.2(vite@5.0.8)(vue@3.3.11)':
+  '@vitejs/plugin-vue@4.5.2(vite@5.0.8(@types/node@20.11.16))(vue@3.3.11(typescript@5.2.2))':
     dependencies:
       vite: 5.0.8(@types/node@20.11.16)
       vue: 3.3.11(typescript@5.2.2)
@@ -759,8 +766,9 @@ snapshots:
       minimatch: 9.0.3
       muggle-string: 0.3.1
       path-browserify: 1.0.1
-      typescript: 5.2.2
       vue-template-compiler: 2.7.16
+    optionalDependencies:
+      typescript: 5.2.2
 
   '@vue/reactivity-transform@3.3.11':
     dependencies:
@@ -785,7 +793,7 @@ snapshots:
       '@vue/shared': 3.3.11
       csstype: 3.1.3
 
-  '@vue/server-renderer@3.3.11(vue@3.3.11)':
+  '@vue/server-renderer@3.3.11(vue@3.3.11(typescript@5.2.2))':
     dependencies:
       '@vue/compiler-ssr': 3.3.11
       '@vue/shared': 3.3.11
@@ -894,12 +902,13 @@ snapshots:
 
   picocolors@1.0.0: {}
 
-  pinia@2.1.7(typescript@5.2.2)(vue@3.3.11):
+  pinia@2.1.7(typescript@5.2.2)(vue@3.3.11(typescript@5.2.2)):
     dependencies:
       '@vue/devtools-api': 6.5.1
-      typescript: 5.2.2
       vue: 3.3.11(typescript@5.2.2)
-      vue-demi: 0.14.7(vue@3.3.11)
+      vue-demi: 0.14.7(vue@3.3.11(typescript@5.2.2))
+    optionalDependencies:
+      typescript: 5.2.2
 
   postcss@8.4.33:
     dependencies:
@@ -940,20 +949,22 @@ snapshots:
 
   undici-types@5.26.5: {}
 
+  v-click-outside@3.2.0: {}
+
   vite@5.0.8(@types/node@20.11.16):
     dependencies:
-      '@types/node': 20.11.16
       esbuild: 0.19.12
       postcss: 8.4.33
       rollup: 4.9.6
     optionalDependencies:
+      '@types/node': 20.11.16
       fsevents: 2.3.3
 
-  vue-demi@0.14.7(vue@3.3.11):
+  vue-demi@0.14.7(vue@3.3.11(typescript@5.2.2)):
     dependencies:
       vue: 3.3.11(typescript@5.2.2)
 
-  vue-router@4.2.5(vue@3.3.11):
+  vue-router@4.2.5(vue@3.3.11(typescript@5.2.2)):
     dependencies:
       '@vue/devtools-api': 6.5.1
       vue: 3.3.11(typescript@5.2.2)
@@ -981,8 +992,9 @@ snapshots:
       '@vue/compiler-dom': 3.3.11
       '@vue/compiler-sfc': 3.3.11
       '@vue/runtime-dom': 3.3.11
-      '@vue/server-renderer': 3.3.11(vue@3.3.11)
+      '@vue/server-renderer': 3.3.11(vue@3.3.11(typescript@5.2.2))
       '@vue/shared': 3.3.11
+    optionalDependencies:
       typescript: 5.2.2
 
   yallist@4.0.0: {}

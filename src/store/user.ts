@@ -65,21 +65,12 @@ export const useUserStore = defineStore('user', {
             const apiKey = import.meta.env.VITE_API_KEY
             if (apiKey !== undefined && apiKey !== "") {
                 try {
-                    console.log(apiKey)
                     const response = await axios.get<User>(`${import.meta.env.VITE_API_HOST}/getMe`, {
                         headers: {
                             'x-api-key': apiKey,
                         }
                     });
-                    console.log(response.data)
                     this.setUser(response.data);
-                    if (!this.user) {
-                        return
-                    }
-                    if (this.user.auto_farmer_profit > 0) {
-                        this.user.balance -= this.user.auto_farmer_profit
-                    }
-                    return this.user
                 } catch (error) {
                     console.error('Login via ready token error:', error);
                     // Обробка помилок або відображення повідомлення користувачу
@@ -87,13 +78,19 @@ export const useUserStore = defineStore('user', {
             } else {
                 try {
                     const response = await axios.post<User>(`${import.meta.env.VITE_API_HOST}/authorize`, initData);
-                    console.log(response.data)
                     this.setUser(response.data);
                 } catch (error) {
                     console.error('Login error:', error);
                     // Обробка помилок або відображення повідомлення користувачу
                 }
             }
+            if (!this.user) {
+                return
+            }
+            if (this.user.auto_farmer_profit > 0) {
+                this.user.balance -= this.user.auto_farmer_profit
+            }
+            return this.user
         },
         mineCoins() {
             if (this.user && this.user.energy >= this.user.mine_level) {

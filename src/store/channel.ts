@@ -8,6 +8,7 @@ export interface Channel {
     invite_link: string;
     reward: number;
     avatar_url?: string;
+    is_available: boolean;
 };
 
 export const useChannelsStore = defineStore('channels', {

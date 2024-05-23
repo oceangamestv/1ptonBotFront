@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watchEffect } from 'vue'
-import { useWebAppViewport, useWebApp, useWebAppBackButton, useWebAppTheme } from 'vue-tg'
+import {computed, onMounted, onUnmounted, ref, watchEffect} from 'vue'
+import {useWebAppViewport, useWebApp, useWebAppBackButton, useWebAppTheme, useWebAppClosingConfirmation} from 'vue-tg'
 import { useUserStore } from './store/user'
 import { useRoute, useRouter } from 'vue-router';
 import Popup from '@/components/Popup.vue'
 
 const router = useRouter()
 const route = useRoute()
+const userStore = useUserStore()
 
 useWebAppViewport().expand()
+useWebAppClosingConfirmation().enableClosingConfirmation()
 useWebAppTheme().headerColor.value = "#2B2564";
 useWebAppTheme().backgroundColor.value = "#2B2564";
 
@@ -22,14 +24,15 @@ let rechargeID: NodeJS.Timeout | null
 const farmerPopup = ref(false)
 const farmerPopupText = ref("")
 const farmerProfit = ref(0)
+const farmerClosed = ref(false)
 const farmerPopupClose = () => {
   const user = useUserStore()
-  if (user.user) {
+  if (user.user && !farmerClosed.value) {
     user.user.balance += farmerProfit.value
+    farmerClosed.value = true
   }
 }
 onMounted(() => {
-  const userStore = useUserStore()
   userStore.login(useWebApp().initData).then(user => {
     if (!user) {
       return
@@ -56,10 +59,12 @@ watchEffect(() => {
   }
 })
 
+const isUserLoggedIn = computed(() => userStore.user !== null);
+
 </script>
 
 <template>
-  <RouterView />
+  <RouterView v-if="isUserLoggedIn" />
   <Popup v-if="farmerPopup" header="👨‍🌾 Auto farmer" :body="farmerPopupText" action="Claim" :closeCallback="farmerPopupClose"></Popup>
 </template>
 

@@ -80,7 +80,18 @@ footer {
   }
 }
 
+.arrow {
+  width: 16px;
+  height: 16px;
+
+  fill: rgba(256,256,256,.8);
+}
+
 .hint {
   color: #c5c5c5;
   font-size: 14px;
+}
+
+.close-icon {
+  fill: white;
 }
