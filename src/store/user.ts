@@ -1,5 +1,6 @@
-import { defineStore } from 'pinia'
+import {defineStore} from 'pinia'
 import axios from 'axios'
+import TradingLevel from "@/components/TradingLevel.vue";
 
 export interface User {
     id: number;
@@ -46,13 +47,57 @@ export interface MiningResult {
     newEnergy: number;
 }
 
+export interface Asset {
+    id: number;
+    name: string;
+    code: string;
+    network: string;
+    price_usd: number;
+}
+
+export interface Order {
+    id: string; // Assuming uuid.UUID is represented as a string in JSON
+    asset_code: string;
+    asset_amount: number;
+    amount_usd: number;
+    status: string;
+}
+
+export interface TradingLevel {
+    level: number;
+    price_usd: number;
+    max_value: number;
+}
+
+export interface TradingLevels {
+    trading_levels: TradingLevel[];
+    manager: string;
+}
+
+export interface TradingResponse {
+    referral_link: string;
+    referral_count: number;
+    trading_level: number;
+    max_value: number;
+    assets: Asset[];
+    orders: Order[];
+    trading_levels: TradingLevel[];
+}
+
 export const useUserStore = defineStore('user', {
     state: () => ({
         user: null as User | null,
-        boosts: null as Boosts | null
+        boosts: null as Boosts | null,
+        tradingLevels: null as TradingLevel[] | null
     }),
     getters: {
         getAccessToken: (state) => state.user?.access_token,
+        getMaxEnergy(): number {
+            if (this.user) {
+                return 1000 + (this.user.max_energy_level-1) * 500
+            }
+            return 0
+        }
     },
     actions: {
         setUser(user: User) {
@@ -101,6 +146,29 @@ export const useUserStore = defineStore('user', {
                 this.user.balance += this.user.mine_level * mul
                 this.user.energy -= this.user.mine_level
             }
+        },
+        async getTrading() {
+            if (!this.user) {
+                return
+            }
+            const response = await axios.get<TradingResponse>(`${import.meta.env.VITE_API_HOST}/swap`, {
+                headers: {
+                    'x-api-key': this.user.access_token,
+                }
+            });
+            this.tradingLevels = response.data.trading_levels
+            return response.data
+        },
+        async getTradingLevels() {
+            if (!this.user) {
+                return
+            }
+            const response = await axios.get<TradingLevels>(`${import.meta.env.VITE_API_HOST}/tradingLevels`, {
+                headers: {
+                    'x-api-key': this.user.access_token,
+                }
+            });
+            return response.data
         },
         async sendMineCoins(clicks: number) {
             if (!this.user) {
@@ -158,6 +226,20 @@ export const useUserStore = defineStore('user', {
             // this.user.balance = result.data.balance
             // this.user.energy = result.data.newEnergy
         },
+        async sellAsset(asset_id: number, amount: number) {
+            if (!this.user) {
+                return;
+            }
+
+            return await axios.post<Order>(`${import.meta.env.VITE_API_HOST}/swap`, {
+                asset_id: asset_id,
+                amount: amount,
+            }, {
+                headers: {
+                    'x-api-key': this.user.access_token,
+                }
+            })
+        },
         async openDailyBooster() {
             if (!this.user) {
                 return;
@@ -172,8 +254,8 @@ export const useUserStore = defineStore('user', {
         },
         recharge() {
             if (this.user) {
-                if (this.user.energy + this.user.energy_level > (1000 + this.user.max_energy_level * 500)) {
-                    this.user.energy = 1000 + this.user.max_energy_level * 500
+                if (this.user.energy + this.user.energy_level > this.getMaxEnergy) {
+                    this.user.energy = this.getMaxEnergy
                     return
                 }
                 this.user.energy += this.user.energy_level

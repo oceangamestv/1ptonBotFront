@@ -17,92 +17,98 @@ const openChannelLink = (channel: Channel) => {
 </script>
 
 <template>
-  <div class="telegram-channels">
-    <div class="earn-title">
-      🤑 Earn
-    </div>
-    <div class="channels-title">
-      📢 Channels
-    </div>
-    <div class="channels-list">
-      <div v-for="channel in channelsStore.channels" :key="channel.id" @click="openChannelLink(channel)" class="channel">
-        <div class="channel-info">
-          <span class="name">{{ channel.title }}</span>
+  <main>
+    <section class="earn-section">
+      <div class="earn-offer">
+        <div class="earn-offer__avatar">
+          <img src="@/assets/coins-stack.svg" width="24" height="24" alt="Earn icon">
         </div>
-        <div class="channel-action">
-          <span v-if="channel.is_available" class="reward">🪙 {{ channel.reward.toLocaleString() }}</span>
-          <span v-else class="reward">💠 Reward reached</span>
-          <svg class="arrow">
-            <use xlink:href="@/assets/images/sprite.svg#chevron-right"></use>
-          </svg>
-<!--          <button v-if="channel.is_available" class="button" @click="openChannelLink(channel)">Join</button>-->
+        <h2 class="headline semi-bold">
+          Earn more coins
+        </h2>
+      </div>
+
+<!--      &lt;!&ndash; you can also use <button> instead of <a> tag &ndash;&gt;-->
+<!--      <a href="#" class="cta-widget invite-friends">-->
+<!--        <div class="cta-widget__content">-->
+<!--          <div class="cta-widget__icon">-->
+<!--            <img src="@/assets/hearts-floating.svg" width="24" height="24" alt="Hearts floating icon">-->
+<!--          </div>-->
+<!--          <div class="cta-widget__info">-->
+<!--            <div class="cta-widget__info-title">-->
+<!--              <strong class="sub-headline-2">Invite Friends</strong>-->
+<!--            </div>-->
+<!--            <div class="cta-widget__info-message">-->
+<!--              up to <strong>30 000</strong> for friend-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <img src="@/assets/arrow-right-circle.svg" class="cta-widget__arrow" width="32" height="32"-->
+<!--             alt="Arrow right icon">-->
+<!--      </a>-->
+
+      <div class="earn-body">
+        <div class="earn-block">
+          <h4 class="earn-block__title title-3">Channels</h4>
+          <div class="earn-block__card card">
+            <a
+                @click.prevent="openChannelLink(channel)"
+                class="cta-widget"
+                v-for="channel in channelsStore.channels"
+                :key="channel.id">
+              <div class="cta-widget__content">
+<!--                <div class="cta-widget__icon"></div>-->
+                <div class="cta-widget__info">
+                  <div class="cta-widget__info-title">
+                    <strong class="sub-headline-2">{{channel.title}}</strong>
+                  </div>
+                  <div class="cta-widget__info-message">
+                    <strong v-if="channel.is_available">+{{channel.reward.toLocaleString()}}</strong>
+                    <strong v-else>Reward reached</strong>
+                  </div>
+                </div>
+              </div>
+              <img src="@/assets/arrow-right-circle.svg" class="cta-widget__arrow" width="32"
+                   height="32" alt="Arrow right icon">
+            </a>
+          </div>
         </div>
       </div>
-      <div class="channel" @click="wn.openTelegramLink('https://t.me/jetton?start=ccpGavsXUFo')">
-        <div class="channel-info">
-          <span class="name">JetTon</span>
-        </div>
-        <div class="channel-action">
-          <span class="reward" style="font-size: 12px;">🪙 100K after first deposit</span>
-          <svg class="arrow">
-            <use xlink:href="@/assets/images/sprite.svg#chevron-right"></use>
-          </svg>
-<!--          <button class="button" @click="wn.openTelegramLink('https://t.me/jetton?start=ccpGavsXUFo')">Play</button>-->
-        </div>
-      </div>
-    </div>
-  </div>
+    </section>
+  </main>
+<!--  <div class="telegram-channels">-->
+<!--    <div class="earn-title">-->
+<!--      🤑 Earn-->
+<!--    </div>-->
+<!--    <div class="channels-title">-->
+<!--      📢 Channels-->
+<!--    </div>-->
+<!--    <div class="channels-list">-->
+<!--      <div v-for="channel in channelsStore.channels" :key="channel.id" @click="openChannelLink(channel)" class="channel">-->
+<!--        <div class="channel-info">-->
+<!--          <span class="name">{{ channel.title }}</span>-->
+<!--        </div>-->
+<!--        <div class="channel-action">-->
+<!--          <span v-if="channel.is_available" class="reward">🪙 {{ channel.reward.toLocaleString() }}</span>-->
+<!--          <span v-else class="reward">💠 Reward reached</span>-->
+<!--          <svg class="arrow">-->
+<!--            <use xlink:href="@/assets/images/sprite.svg#chevron-right"></use>-->
+<!--          </svg>-->
+<!--&lt;!&ndash;          <button v-if="channel.is_available" class="button" @click="openChannelLink(channel)">Join</button>&ndash;&gt;-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="channel" @click="wn.openTelegramLink('https://t.me/jetton?start=ccpGavsXUFo')">-->
+<!--        <div class="channel-info">-->
+<!--          <span class="name">JetTon</span>-->
+<!--        </div>-->
+<!--        <div class="channel-action">-->
+<!--          <span class="reward" style="font-size: 12px;">🪙 100K after first deposit</span>-->
+<!--          <svg class="arrow">-->
+<!--            <use xlink:href="@/assets/images/sprite.svg#chevron-right"></use>-->
+<!--          </svg>-->
+<!--&lt;!&ndash;          <button class="button" @click="wn.openTelegramLink('https://t.me/jetton?start=ccpGavsXUFo')">Play</button>&ndash;&gt;-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 </template>
-
-<style scoped>
-.channel {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 10px;
-  background: rgba(128, 128, 128, 0.1);
-  color: #fff;
-  padding: 20px 10px;
-  border-radius: 8px;
-}
-
-.earn-title {
-  margin: 25px 10px;
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-}
-.channels-title {
-  margin: 10px;
-  font-size: 24px;
-  font-weight: bolder;
-}
-
-.channel-info {
-  display: flex;
-  flex-direction: column;
-  /* font-size: 18px; */
-}
-
-.channel-action {
-  display: flex;
-  align-items: center;
-}
-
-.name,
-.description,
-.reward {
-  margin-right: 15px;
-}
-
-.button {
-  padding: 10px 10px;
-  background: #000000;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: large;
-  font-weight: bold;
-}
-</style>

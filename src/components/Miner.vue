@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-import Balance from './account/Balance.vue';
+import {ref, onMounted, onUnmounted, computed} from 'vue';
 import { useWebAppHapticFeedback } from 'vue-tg'
-import BottomMenu from './BottomMenu.vue';
 import { useUserStore } from '@/store/user';
+import {useAnimatedBalance} from "@/hooks/balance.ts";
+import {useEnergy} from '@/hooks/energy';
+import {formatNumber} from '@/hooks/format.ts';
 
 const userStore = useUserStore()
 
@@ -43,7 +44,7 @@ const isMobileDevice = () => {
 };
 const createFlyingNumber = (farm: number, x: number, y: number) => {
     const numberEl = document.createElement('div');
-    numberEl.textContent = farm.toString(); // Тут може бути будь-яке число або текст
+    numberEl.textContent = "+" + farm.toString(); // Тут може бути будь-яке число або текст
     numberEl.style.position = 'absolute';
     numberEl.style.left = `${x}px`;
     numberEl.style.top = `${y}px`;
@@ -66,6 +67,13 @@ const createFlyingNumber = (farm: number, x: number, y: number) => {
     }, 1000); // Тривалість анімації
 };
 
+function isTouchEvent(event: any): boolean {
+  if ((window as any).TouchEvent !== undefined) {
+    return event instanceof TouchEvent;
+  }
+
+  return event.touches !== undefined;
+}
 const applyTilt = (event: MouseEvent | TouchEvent) => {
     if (!userStore.user) return;
     if (!coinRef.value) return;
@@ -76,7 +84,7 @@ const applyTilt = (event: MouseEvent | TouchEvent) => {
 
     let clientX, clientY;
 
-    if (event instanceof TouchEvent) {
+    if (isTouchEvent(event)) {
         const touchEvent = event as TouchEvent;
         clientX = touchEvent.touches[0].clientX;
         clientY = touchEvent.touches[0].clientY;
@@ -102,60 +110,87 @@ const applyTilt = (event: MouseEvent | TouchEvent) => {
         onUserClick()
     }
 
-    // const coinRect = coinRef.value.getBoundingClientRect();
-    // const coinCenterX = coinRect.left + coinRect.width / 2;
-    // const coinCenterY = coinRect.top + coinRect.height / 2;
-
-    // const tiltX = clientX < coinCenterX ? 'rotateY(-10deg)' : 'rotateY(10deg)';
-    // const tiltY = clientY < coinCenterY ? 'rotateX(10deg)' : 'rotateX(-10deg)';
-
-    // coinRef.value.style.transform = `${tiltY} ${tiltX}`;
-
-    coinRef.value.style.transform = 'scale(0.98)';
+  coinRef.value.style.transform = 'translate(-50%, -50%) scale(0.98)';
 };
 
 const resetTilt = () => {
     if (coinRef.value) {
         coinRef.value.style.transform = '';
-        coinRef.value.style.transform = 'scale(1)';
+      coinRef.value.style.transform = 'translate(-50%, -50%) scale(1)';
     }
 };
+
+const animatedBalance = useAnimatedBalance()
+const energy = useEnergy()
+const formatedAnimatedBalance = computed(() => {
+  return animatedBalance.value.toLocaleString();
+});
+
+const fe = computed(() => {
+  return {
+    energy: formatNumber(energy.energy.value),
+    maxEnergy: formatNumber(energy.maxEnergy.value),
+  };
+});
 
 </script>
 
 <template>
-    <main>
-        <Balance />
-        <!-- <League /> -->
-        <div class="coin-container numbers-container" ref="numbersContainerRef">
-            <img v-if="userStore.user?.is_premium" src="../assets/images/coconut_coin.png" class="coin" ref="coinRef" @mousedown="applyTilt" @touchstart="applyTilt"
-                @mouseup="resetTilt" @mouseleave="resetTilt" @touchend="resetTilt" />
-            <img v-else src="../assets/images/coin_min.webp" class="coin" ref="coinRef" @mousedown="applyTilt" @touchstart="applyTilt"
-                @mouseup="resetTilt" @mouseleave="resetTilt" @touchend="resetTilt" />
+  <main>
+    <section class="hero-section" ref="numbersContainerRef">
+<!--      <a href="#" class="join-team-link">-->
+<!--        <span>Join team</span>-->
+<!--        <img src="@/assets/arrow-right-circle.svg" width="32" height="32" alt="Arrow right">-->
+<!--      </a>-->
+      <div class="hero-offer">
+        <span class="hero-offer__grade">Your balance</span>
+        <h1 class="hero-offer__title">
+          {{ formatedAnimatedBalance }}
+        </h1>
+      </div>
+      <div class="coin">
+        <img
+            ref="coinRef"
+            @mousedown="applyTilt" @touchstart="applyTilt"
+            @mouseup="resetTilt" @mouseleave="resetTilt" @touchend="resetTilt"
+            src="@/assets/coin.svg" class="coin__img" draggable="false" alt="">
+      </div>
+      <div class="progress">
+        <div class="progress__info flex-center">
+          <img src="@/assets/lightning.svg" width="24" height="24" alt="Lightning icon">
+          <div class="progress__info-wrap bold">
+            <span class="progress__current">{{fe.energy }}</span> / <span>{{ fe.maxEnergy }}</span>
+          </div>
         </div>
-    </main>
-    <BottomMenu />
+        <div class="progress__bar-wrapper">
+          <div class="progress__bar">
+            <div class="progress__bar-inner" :style="`width: ${energy.energyPct.value}%;`"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 </template>
 
-<style scoped>
-
-.coin-container {
-    position: relative;
-    text-align: center;
+<style>
+.flying-number {
+  position: absolute;
+  animation: flyAndFade 1s ease-out forwards;
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
+  user-select: none; /* Додаємо цю властивість */
+  pointer-events: none; /* Це запобігає взаємодії з елементом через курсор */
 }
 
-.coin {
-    transition: transform 0.1s;
-    cursor: pointer;
-    width: 80%;
-    height: auto;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent; /* Для вебкіт-браузерів на мобільних пристроях */
-    -webkit-user-select: none; /* Специфічно для WebKit браузерів */
-    /* Додаємо цю властивість */
-}
-
-.coin:active {
-    -webkit-tap-highlight-color: transparent;
+@keyframes flyAndFade {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-130px);
+  }
 }
 </style>
