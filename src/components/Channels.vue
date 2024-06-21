@@ -50,7 +50,7 @@ const openChannelLink = (channel: Channel) => {
       <div class="earn-body">
         <div class="earn-block">
           <h4 class="earn-block__title title-3">Channels</h4>
-          <div class="earn-block__card card">
+          <div class="earn-block__card card" v-if="(channelsStore.channels?.length ?? 0) > 1">
             <a
                 @click.prevent="openChannelLink(channel)"
                 class="cta-widget"
@@ -71,6 +71,9 @@ const openChannelLink = (channel: Channel) => {
               <img src="@/assets/arrow-right-circle.svg" class="cta-widget__arrow" width="32"
                    height="32" alt="Arrow right icon">
             </a>
+          </div>
+          <div class="earn-block__card card" v-else style="text-align: center">
+              No channels available
           </div>
         </div>
       </div>

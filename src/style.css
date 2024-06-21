@@ -15,7 +15,9 @@ html {
   letter-spacing: -0.4px;
   color: #fff;
   /* background-color: #0F0F0F; */
-  background-color: #131313;
+  /*background-color: #131313;*/
+  background: url("@/assets/back.jpg") no-repeat center center fixed;
+  background-size: cover;
 
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -281,7 +283,7 @@ main {
   bottom: 0;
   left: 0;
   height: 100%;
-  background-image: linear-gradient(90deg, rgba(255, 207, 78, 1) 0%, rgba(255, 125, 55, 1) 100%);
+  background-image: linear-gradient(90deg, rgba(239, 176, 41, 1) 0%, rgba(252, 116, 27, 1) 100%);
   border-radius: 3px;
   transition: all .3s ease;
 }
@@ -617,6 +619,149 @@ main {
 
 .history-list__item-status.success {
   color: #32E55E;
+}
+
+/* friends page */
+
+.friends-section {
+  padding: 18px 16px 110px;
+}
+
+.friends-offer {
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.friends-offer p {
+  width: 190px;
+}
+
+.friends-offer h2 {
+  margin-bottom: 6px;
+}
+
+.friends-offer__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background-color: #4E47FF;
+  position: relative;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.friends-offer__avatar img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.cta-widget__icon-friends {
+  width: 40px;
+  height: 40px;
+  background-color: #249BD7;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px
+}
+
+.friends-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+
+.friends-block__title {
+  padding: 16px 0 12px;
+}
+
+.friends-block__card {
+  padding: 16px;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.friends-block__card-subtitle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+  color: #AAAAAA;
+  padding-bottom: 8px;
+}
+
+.friends__divider {
+  width: 100%;
+  height: 0.5px;
+  background-color: #2B2B2B;
+}
+
+.reward-widget {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  color: #fff;
+  box-shadow: none;
+  width: 100%;
+}
+
+.reward-widget:last-child {
+  padding: 12px 0 0 0;
+}
+
+.reward-widget__content {
+  display: flex;
+  align-items: center;
+}
+
+.reward-widget__icon {
+  width: 48px;
+  height: 48px;
+  background-color: #4378FF1A;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px
+}
+
+.reward-widget__icon p {
+  color: #007AFF;
+}
+
+.reward-widget__info-title strong {
+  font-size: 1rem;
+  line-height: 1.29rem;
+  letter-spacing: -0.4px;
+}
+
+.reward-widget__info-title p {
+  text-align: right;
+  color: #31D158;
+  font-size: 1rem;
+  line-height: 1.29rem;
+  letter-spacing: -0.4px;
+}
+
+.reward-widget__info-date {
+  color: #AAAAAA;
+}
+
+.reward-widget__info-description {
+  color: #707579;
+  text-align: right;
 }
 
 /* earn page */

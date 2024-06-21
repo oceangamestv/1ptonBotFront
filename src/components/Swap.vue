@@ -130,95 +130,95 @@ const copyToClipboard = (text: string) => {
         </button>
       </div>
 
-      <div class="stats card">
-        <div class="stats__row level-wrap">
-          <p class="stats__label">
-            Trading level
-          </p>
-          <router-link to="/tradingLevel" class="stats-level-link">
-            <span class="sub-headline-2">{{ trading?.trading_level }}</span> <img src="@/assets/arrow-up-circle.svg" width="20"
-                                                       height="20" alt="Arrow Up icon">
-          </router-link>
-        </div>
-        <div class="stats__divider"></div>
-        <div class="stats__row amount-wrap">
-          <p class="stats__label">
-            Max amount
-          </p>
-          <p class="stats__value sub-headline-2">
-            {{trading?.max_value}} USDT
-          </p>
-        </div>
-      </div>
+<!--      <div class="stats card">-->
+<!--        <div class="stats__row level-wrap">-->
+<!--          <p class="stats__label">-->
+<!--            Trading level-->
+<!--          </p>-->
+<!--          <router-link to="/tradingLevel" class="stats-level-link">-->
+<!--            <span class="sub-headline-2">{{ trading?.trading_level }}</span> <img src="@/assets/arrow-up-circle.svg" width="20"-->
+<!--                                                       height="20" alt="Arrow Up icon">-->
+<!--          </router-link>-->
+<!--        </div>-->
+<!--        <div class="stats__divider"></div>-->
+<!--        <div class="stats__row amount-wrap">-->
+<!--          <p class="stats__label">-->
+<!--            Max amount-->
+<!--          </p>-->
+<!--          <p class="stats__value sub-headline-2">-->
+<!--            {{trading?.max_value}} USDT-->
+<!--          </p>-->
+<!--        </div>-->
+<!--      </div>-->
 
-      <div class="sell card">
-        <div class="sell__row top">
-          <div class="control-widget">
-            <input type="text" v-model="assetAmount" class="control-widget__input">
+<!--      <div class="sell card">-->
+<!--        <div class="sell__row top">-->
+<!--          <div class="control-widget">-->
+<!--            <input type="text" v-model="assetAmount" class="control-widget__input">-->
 
-            <div class="control-widget__token" data-open="select-token" @click="isSelectToken = true">
-              <img src="@/assets/ton.svg" class="control-widget__token-icon" width="20" height="20"
-                   alt="TON">
-              <span class="sub-headline-2">{{ selectedAsset?.code }}</span>
-              <img src="@/assets/arrow-down-circle.svg" alt="Arrow down icon">
-            </div>
-          </div>
-        </div>
-        <div class="sell__divider">
-          <div class="sell__divider-line"></div>
-          <img src="@/assets/arrow-down.svg" class="sell__divider-icon" width="24" height="24"
-               alt="Arrow down icon">
-        </div>
-        <div class="sell__row bottom">
-          <div class="control-widget">
-            <input type="text" v-model="valueUsd" class="control-widget__input">
+<!--            <div class="control-widget__token" data-open="select-token" @click="isSelectToken = true">-->
+<!--              <img src="@/assets/ton.svg" class="control-widget__token-icon" width="20" height="20"-->
+<!--                   alt="TON">-->
+<!--              <span class="sub-headline-2">{{ selectedAsset?.code }}</span>-->
+<!--              <img src="@/assets/arrow-down-circle.svg" alt="Arrow down icon">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="sell__divider">-->
+<!--          <div class="sell__divider-line"></div>-->
+<!--          <img src="@/assets/arrow-down.svg" class="sell__divider-icon" width="24" height="24"-->
+<!--               alt="Arrow down icon">-->
+<!--        </div>-->
+<!--        <div class="sell__row bottom">-->
+<!--          <div class="control-widget">-->
+<!--            <input type="text" v-model="valueUsd" class="control-widget__input">-->
 
-            <div class="control-widget__token" data-open="select-token">
-              <img src="@/assets/usdt.svg" class="control-widget__token-icon" width="20" height="20"
-                   alt="TON">
-              <span class="sub-headline-2">USDT</span>
-              <img src="@/assets/arrow-down-circle_gray.svg" alt="Arrow down icon">
-            </div>
-          </div>
+<!--            <div class="control-widget__token" data-open="select-token">-->
+<!--              <img src="@/assets/usdt.svg" class="control-widget__token-icon" width="20" height="20"-->
+<!--                   alt="TON">-->
+<!--              <span class="sub-headline-2">USDT</span>-->
+<!--              <img src="@/assets/arrow-down-circle_gray.svg" alt="Arrow down icon">-->
+<!--            </div>-->
+<!--          </div>-->
 
-          <button @click="sellAsset" class="primary-btn" data-open="error">
-            <img src="@/assets/arrow-up-circle_black.svg" width="24" height="24" alt="Arrow up icon">
-            <span>Sell</span>
-          </button>
-        </div>
-      </div>
+<!--          <button @click="sellAsset" class="primary-btn" data-open="error">-->
+<!--            <img src="@/assets/arrow-up-circle_black.svg" width="24" height="24" alt="Arrow up icon">-->
+<!--            <span>Sell</span>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
 
-      <div class="history card">
-        <h6 class="history__title caption-1">
-          Transaction history
-        </h6>
-        <ul class="history-list" v-if="trading?.orders.length ?? 0 > 0">
-          <li class="history-list__item" v-for="order in trading?.orders">
-            <div class="history-list__item-info">
-              <div class="history-list__item-hash">
-                <span class="sub-headline-2">{{truncate(order.id, 20)}}</span>
-                <button class="copy-btn" @click="copyToClipboard(order.id)">
-                  <img src="@/assets/copy.svg" width="20" height="20" alt="Copy">
-                </button>
-              </div>
-              <div class="history-list__item-details">
-                {{ order.asset_amount }} {{ order.asset_code }} → {{order.amount_usd}} USDT
-              </div>
-            </div>
-            <div v-if="order.status==='completed'" class="history-list__item-status sub-headline-2 success">
-              Completed
-            </div>
-            <div v-else class="history-list__item-status sub-headline-2">
-              {{ order.status }}
-            </div>
-          </li>
-        </ul>
-        <div v-else class="history-list__empty">
-          <p class="history-list__empty-text">
-            No transactions yet
-          </p>
-        </div>
-      </div>
+<!--      <div class="history card">-->
+<!--        <h6 class="history__title caption-1">-->
+<!--          Transaction history-->
+<!--        </h6>-->
+<!--        <ul class="history-list" v-if="trading?.orders.length ?? 0 > 0">-->
+<!--          <li class="history-list__item" v-for="order in trading?.orders">-->
+<!--            <div class="history-list__item-info">-->
+<!--              <div class="history-list__item-hash">-->
+<!--                <span class="sub-headline-2">{{truncate(order.id, 20)}}</span>-->
+<!--                <button class="copy-btn" @click="copyToClipboard(order.id)">-->
+<!--                  <img src="@/assets/copy.svg" width="20" height="20" alt="Copy">-->
+<!--                </button>-->
+<!--              </div>-->
+<!--              <div class="history-list__item-details">-->
+<!--                {{ order.asset_amount }} {{ order.asset_code }} → {{order.amount_usd}} USDT-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div v-if="order.status==='completed'" class="history-list__item-status sub-headline-2 success">-->
+<!--              Completed-->
+<!--            </div>-->
+<!--            <div v-else class="history-list__item-status sub-headline-2">-->
+<!--              {{ order.status }}-->
+<!--            </div>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--        <div v-else class="history-list__empty">-->
+<!--          <p class="history-list__empty-text">-->
+<!--            No transactions yet-->
+<!--          </p>-->
+<!--        </div>-->
+<!--      </div>-->
 
     </section>
   </main>

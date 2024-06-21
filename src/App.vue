@@ -12,8 +12,8 @@ const userStore = useUserStore()
 
 useWebAppViewport().expand()
 useWebAppClosingConfirmation().enableClosingConfirmation()
-useWebAppTheme().headerColor.value = "#131313";
-useWebAppTheme().backgroundColor.value = "#131313";
+useWebAppTheme().headerColor.value = "#453b1b";
+useWebAppTheme().backgroundColor.value = "#453b1b";
 
 useWebAppBackButton().onBackButtonClicked(() => {
   router.push("/")

@@ -153,7 +153,7 @@ const fe = computed(() => {
             ref="coinRef"
             @mousedown="applyTilt" @touchstart="applyTilt"
             @mouseup="resetTilt" @mouseleave="resetTilt" @touchend="resetTilt"
-            src="@/assets/coin.svg" class="coin__img" draggable="false" alt="">
+            src="@/assets/coin.png" class="coin__img" draggable="false" alt="">
       </div>
       <div class="progress">
         <div class="progress__info flex-center">

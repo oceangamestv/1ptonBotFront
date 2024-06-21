@@ -1,16 +1,16 @@
-import {ref, watch} from "vue";
-import {useUserStore} from "@/store/user.ts";
+import { ref, watch } from "vue";
+import { useUserStore } from "@/store/user.ts";
 
 export const useAnimatedBalance = () => {
   const userStore = useUserStore();
-  const animatedBalance = ref(userStore.user?.balance || 0);
+  const animatedBalance = ref((userStore.user?.balance || 0) / 100);
 
-  // Функція для плавної зміни балансу
+  // Function to smoothly animate the balance change
   function animateBalance(newBalance: number) {
     const startBalance = animatedBalance.value;
     const change = newBalance - startBalance;
-    let duration = 900; // тривалість анімації в мілісекундах
-    if (change <= 10) {
+    let duration = 900; // animation duration in milliseconds
+    if (change <= 0.1) {
       duration = 300;
     }
     const startTime = performance.now();
@@ -18,7 +18,7 @@ export const useAnimatedBalance = () => {
     function update(currentTime: number) {
       const elapsedTime = currentTime - startTime;
       const progress = Math.min(elapsedTime / duration, 1);
-      animatedBalance.value = Math.round(startBalance + change * progress);
+      animatedBalance.value = Math.round((startBalance + change * progress) * 100) / 100;
 
       if (progress < 1) {
         requestAnimationFrame(update);
@@ -28,10 +28,14 @@ export const useAnimatedBalance = () => {
     requestAnimationFrame(update);
   }
 
-  // Спостерігаємо за зміною балансу і анімуємо цифри
-  watch(() => userStore.user?.balance ?? 0, (newBalance: number) => {
-    animateBalance(newBalance);
-  }, { immediate: true });
+  // Watch for balance changes and animate the numbers
+  watch(
+    () => (userStore.user?.balance ?? 0) / 100,
+    (newBalance: number) => {
+      animateBalance(newBalance);
+    },
+    { immediate: true }
+  );
 
   return animatedBalance;
-}
+};

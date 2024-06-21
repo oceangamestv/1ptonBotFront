@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { useUserStore } from '@/store/user';
+import {ApiError, useUserStore} from '@/store/user';
 import {computed, ref} from 'vue';
 import { useWebAppPopup } from 'vue-tg'
 import moment from 'moment';
 import {useAnimatedBalance} from "@/hooks/balance.ts";
+import {AxiosError} from "axios";
 
 const userStore = useUserStore()
 userStore.getBoosts()
@@ -155,7 +156,24 @@ const purchaseBoost = () => {
             }
         })
     } else {
-        userStore.purchaseBoost(selectedBoost.value.id)
+      userStore.purchaseBoost(selectedBoost.value.id).catch((e: AxiosError) => {
+        const resp = e.response?.data as ApiError
+        if (resp && resp.message === "insufficient balance") {
+          openMoneyErrorModal()
+        } else {
+          console.error(e);
+        }
+      })
+      // try {
+      //   userStore.purchaseBoost(selectedBoost.value.id)
+      // } catch (e: any) {
+      //   alert(123)
+      //   if (e.response && e.response.data && e.response.data.message === "insufficient balance") {
+      //     alert("Insufficient balance to purchase this boost.");
+      //   } else {
+      //     console.error(e);
+      //   }
+      // }
     }
     closePurchaseModal()
 }

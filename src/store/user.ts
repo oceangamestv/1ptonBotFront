@@ -20,6 +20,11 @@ export interface User {
     daily_booster_available_at: Date;
 };
 
+export interface ApiError {
+    message: string;
+    code: number;
+}
+
 export interface Boosts {
     current_mine_level: number;
     mine_level_price: number;
@@ -82,6 +87,18 @@ export interface TradingResponse {
     assets: Asset[];
     orders: Order[];
     trading_levels: TradingLevel[];
+}
+
+export interface Friend {
+    avatar?: string;
+    identity: string;
+    reward: number;
+}
+
+export interface Friends {
+    friends: Friend[];
+    friend_count: number;
+    friend_link: string;
 }
 
 export const useUserStore = defineStore('user', {
@@ -225,6 +242,8 @@ export const useUserStore = defineStore('user', {
             this.setBoosts(result.data.boosts)
             // this.user.balance = result.data.balance
             // this.user.energy = result.data.newEnergy
+
+            return result.data
         },
         async sellAsset(asset_id: number, amount: number) {
             if (!this.user) {
@@ -239,6 +258,17 @@ export const useUserStore = defineStore('user', {
                     'x-api-key': this.user.access_token,
                 }
             })
+        },
+        async friends() {
+            if (!this.user) {
+                return
+            }
+            const response = await axios.get<Friends>(`${import.meta.env.VITE_API_HOST}/friends`, {
+                headers: {
+                    'x-api-key': this.user.access_token,
+                }
+            });
+            return response.data
         },
         async openDailyBooster() {
             if (!this.user) {

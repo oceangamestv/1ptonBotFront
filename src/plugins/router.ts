@@ -8,6 +8,9 @@ const routes = [
         path: '/swap', name: 'swap', component: () => import('@/components/Swap.vue')
     },
     {
+        path: '/friends', name: 'friends', component: () => import('@/components/Friends.vue')
+    },
+    {
         path: '/tradingLevel', name: 'tradingLevel', component: () => import('@/components/TradingLevel.vue')
     },
     {
