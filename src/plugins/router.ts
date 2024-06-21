@@ -5,9 +5,6 @@ const routes = [
         path: '/', name: 'miner', component: () => import('@/components/Miner.vue')
     },
     {
-        path: '/swap', name: 'swap', component: () => import('@/components/Swap.vue')
-    },
-    {
         path: '/friends', name: 'friends', component: () => import('@/components/Friends.vue')
     },
     {
