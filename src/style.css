@@ -221,18 +221,6 @@ main {
   border: none;
 }
 
-.coin__img::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  /*outline: 1px solid red;*/
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-}
-
 .coin__backdrop {
   position: absolute;
   top: 50%;
