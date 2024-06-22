@@ -115,7 +115,6 @@ const applyTilt = (event: MouseEvent | TouchEvent) => {
 
 const resetTilt = () => {
     if (coinRef.value) {
-        coinRef.value.style.transform = '';
       coinRef.value.style.transform = 'translate(-50%, -50%) scale(1)';
     }
 };
