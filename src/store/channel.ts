@@ -24,6 +24,8 @@ export const useChannelsStore = defineStore('channels', {
                 }
             });
             this.channels = response.data;
+
+            return response.data;
         }
     },
 })

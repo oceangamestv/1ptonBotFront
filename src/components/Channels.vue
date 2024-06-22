@@ -1,12 +1,16 @@
 <script lang="ts" setup>
 import {Channel, useChannelsStore} from '@/store/channel';
 import { useWebAppNavigation } from 'vue-tg'
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
 
 const channelsStore = useChannelsStore();
 const wn = useWebAppNavigation()
-onMounted(() => {
-  channelsStore.fetchChannels();
+
+const channels = ref<Channel[]>([]);
+onMounted(async () => {
+  // console.log("fetching channels")
+  channels.value = await channelsStore.fetchChannels();
+  // console.log("channels fetched", channelsStore.channels)
 });
 // channelsStore.fetchChannels();
 
@@ -50,7 +54,7 @@ const openChannelLink = (channel: Channel) => {
       <div class="earn-body">
         <div class="earn-block">
           <h4 class="earn-block__title title-3">Channels</h4>
-          <div class="earn-block__card card" v-if="(channelsStore.channels?.length ?? 0) > 1">
+          <div class="earn-block__card card" v-if="channels.length >= 1">
             <a
                 @click.prevent="openChannelLink(channel)"
                 class="cta-widget"
