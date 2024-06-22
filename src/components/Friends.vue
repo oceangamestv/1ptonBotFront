@@ -66,9 +66,6 @@ const limitText = (text: string, limit: number) => {
             <div class="cta-widget__info-title">
               <strong class="sub-headline-2">Invite Friends</strong>
             </div>
-            <div class="cta-widget__info-message">
-              up to <strong>30 000</strong> for friend
-            </div>
           </div>
         </div>
         <img src="@/assets/arrow-right-circle.svg" class="cta-widget__arrow" width="32" height="32"
