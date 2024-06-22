@@ -31,6 +31,14 @@ const getInitials = (name: string) => {
 
   return name.split(' ').map((n) => n[0]).join('')
 }
+
+const limitText = (text: string, limit: number) => {
+  if (text.length > limit) {
+    return text.slice(0, limit) + '...';
+  }
+  return text;
+}
+
 </script>
 
 <template>
@@ -84,7 +92,7 @@ const getInitials = (name: string) => {
                   </div>
                   <div class="reward-widget__info">
                     <div class="reward-widget__info-title">
-                      <strong>{{ friend.identity }}</strong>
+                      <strong>{{ limitText(friend.identity, 16) }}</strong>
                     </div>
                     <!-- <div class="reward-widget__info-date"> -->
                     <!-- <p class="sub-headline-2">Yesterday</p> -->
